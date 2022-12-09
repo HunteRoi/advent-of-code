@@ -1,17 +1,19 @@
 namespace AOC22.Day7;
 
-public static class Runner22
+public static class Runner22Day7
 {
     public static void Run()
     {
+        Console.WriteLine("Day 7");
+        
         var input = File.ReadAllText("./Day7/input.txt");
         var fileSystem = Parser.Parse(input);
 
         var sum = SumOfAllDirectoriesSizeOfAtMost100000(fileSystem);
-        Console.WriteLine("Total size of all directories with size of at most 100_000: "+sum);
+        Console.WriteLine($"[Part 1] Total size of all directories with size of at most 100000: {sum}");
 
         var min = GetSmallestDirectorySizeToDelete(fileSystem);
-        Console.WriteLine("Smallest directory's size to delete to have enough space for the update: "+min);
+        Console.WriteLine($"[Part 2] Smallest directory's size to delete to have enough space for the update: {min}");
     }
 
     private static int GetSmallestDirectorySizeToDelete(FileSystemEntry fileSystem)

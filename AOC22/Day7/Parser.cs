@@ -4,31 +4,36 @@ namespace AOC22.Day7;
 
 public static class Parser
 {
+    private static readonly Regex InstructionRegex = new(@"\$ (\w+) ?([\w/\.]+)?\n([^\$]+)?", RegexOptions.Multiline);
+    private static readonly Regex OutputRegex = new(@"(dir|\d+) ([\w\.]+)", RegexOptions.Multiline);
+    private const string ChangeDirectoryCommand = "cd";
+    private const string ListCommand = "ls";
+    private const string RootPath = "/";
+    private const string ParentDirectoryRelativePath = "..";
+
     public static FileSystemEntry Parse(string input)
     {
-        var rootDirectory = FileSystemEntry.Folder("/");
-        
+        if (!input.StartsWith($"$ {ChangeDirectoryCommand} {RootPath}")) throw new ArgumentException("The input does not begin with root directory", nameof(input));
+
+        var rootDirectory = FileSystemEntry.Folder(RootPath);
         FileSystemEntry? currentDirectory = null;
-        foreach (var inputWithOutput in input.Split("$ ").Skip(1))
+
+        var instructions = InstructionRegex.Matches(input);
+        foreach (var (command, argument, outputs) in instructions.Select(instructionWithOutput => instructionWithOutput.Groups))
         {
-            var lines = inputWithOutput.Trim().Split("\n");
-            var command = lines.First();
-            var commandName = command.Split(" ").First();
-            var arguments = command.Split(" ").Skip(1).ToArray();
-            var outputs = lines.Skip(1);
-            switch (commandName)
+            switch (command)
             {
-                case "cd":
-                    currentDirectory = arguments[0] switch
+                case ChangeDirectoryCommand:
+                    currentDirectory = argument switch
                     {
-                        "/" => rootDirectory,
-                        ".." => currentDirectory!.Parent,
-                        _ => currentDirectory!.Children.First(child =>
-                            child.IsDirectory() && child.Name == arguments[0])
+                        RootPath => rootDirectory,
+                        ParentDirectoryRelativePath => currentDirectory!.Parent,
+                        _ => currentDirectory!.Children.First(child => child.IsDirectory() && child.Name == argument)
                     };
                     break;
-                case "ls":
-                    foreach (var output in outputs) currentDirectory!.AddChild(ReadEntry(output));
+                
+                case ListCommand:
+                    currentDirectory!.AddChildren(ReadOutputs(outputs).ToArray());
                     break;
             }
         }
@@ -36,11 +41,13 @@ public static class Parser
         return rootDirectory;
     }
 
-    private static FileSystemEntry ReadEntry(string entry)
+    private static IEnumerable<FileSystemEntry> ReadOutputs(string entry) => OutputRegex.Matches(entry).AsEnumerable().Select(ReadOutput);
+
+    private static FileSystemEntry ReadOutput(Match outputLine)
     {
-        var entryMetadata = entry.Split(" ");
-        return entryMetadata[0] == "dir" 
-            ? FileSystemEntry.Folder(entryMetadata[1])
-            : FileSystemEntry.File(entryMetadata[1], int.Parse(entryMetadata[0]));
+        var name = outputLine.Groups[2].Value;
+        return int.TryParse(outputLine.Groups[1].Value, out var size)
+            ? FileSystemEntry.File(name, size)
+            : FileSystemEntry.Folder(name);
     }
 }

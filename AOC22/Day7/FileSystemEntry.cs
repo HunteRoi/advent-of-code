@@ -37,6 +37,16 @@ public sealed class FileSystemEntry
 
         return this;
     }
+
+    public FileSystemEntry AddChildren(params FileSystemEntry[] entries)
+    {
+        foreach (var entry in entries)
+        {
+            AddChild(entry);
+        }
+
+        return this;
+    }
     
     public bool IsDirectory() => Type == DirType;
 
