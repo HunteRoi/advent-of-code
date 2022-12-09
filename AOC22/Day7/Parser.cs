@@ -19,7 +19,7 @@ public static class Parser
         FileSystemEntry? currentDirectory = null;
 
         var instructions = InstructionRegex.Matches(input);
-        foreach (var (command, argument, outputs) in instructions.Select(instructionWithOutput => instructionWithOutput.Groups))
+        foreach (var (command, argument, output) in instructions.Select(instructionWithOutput => instructionWithOutput.Groups))
         {
             switch (command)
             {
@@ -33,7 +33,7 @@ public static class Parser
                     break;
                 
                 case ListCommand:
-                    currentDirectory!.AddChildren(ReadOutputs(outputs).ToArray());
+                    currentDirectory!.AddChildren(ReadOutput(output).ToArray());
                     break;
             }
         }
@@ -41,7 +41,7 @@ public static class Parser
         return rootDirectory;
     }
 
-    private static IEnumerable<FileSystemEntry> ReadOutputs(string entry) => OutputRegex.Matches(entry).AsEnumerable().Select(ReadOutput);
+    private static IEnumerable<FileSystemEntry> ReadOutput(string entry) => OutputRegex.Matches(entry).Select(ReadOutput);
 
     private static FileSystemEntry ReadOutput(Match outputLine)
     {
