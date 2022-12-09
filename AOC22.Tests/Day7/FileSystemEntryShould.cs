@@ -15,21 +15,7 @@ public class FileSystemEntryShould
     {
         _fixture = new Fixture();
     }
-
-    [Fact]
-    public void BeADirectory()
-    {
-        var entry = FileSystemEntry.Folder(_fixture.Create<string>());
-        entry.IsDirectory().Should().BeTrue();
-    }
-
-    [Fact]
-    public void BeAFile()
-    {
-        var entry = FileSystemEntry.File(_fixture.Create<string>(), _fixture.Create<int>());
-        entry.IsDirectory().Should().BeFalse();
-    }
-
+    
     [Fact]
     public void PrintAsATree()
     {
@@ -93,5 +79,40 @@ public class FileSystemEntryShould
         
         actual.Should().BeEquivalentTo(expected);
         // actual.Sum(c => c.Size).Should().Be(95_437);
+    }
+    
+    [Fact]
+    public void ReturnMinSized()
+    {
+        var entry = FileSystemEntry.Folder("/")
+            .AddChild(
+                FileSystemEntry.Folder("a")
+                    .AddChild(
+                        FileSystemEntry.Folder("e")
+                            .AddChild(FileSystemEntry.File("i", 584))
+                    )
+                    .AddChild(FileSystemEntry.File("f", 29_116))
+                    .AddChild(FileSystemEntry.File("g", 2_557))
+                    .AddChild(FileSystemEntry.File("h.lst", 62_596))
+            )
+            .AddChild(FileSystemEntry.File("b.txt", 14_848_515))
+            .AddChild(FileSystemEntry.File("c.dat", 8_504_156))
+            .AddChild(
+                FileSystemEntry.Folder("d")
+                    .AddChild(FileSystemEntry.File("j", 4_060_174))
+                    .AddChild(FileSystemEntry.File("d.log", 8_033_020))
+                    .AddChild(FileSystemEntry.File("d.ext", 5_626_152))
+                    .AddChild(FileSystemEntry.File("k", 7_214_296))
+            );
+        var expected = new List<FileSystemEntry>
+        {
+            entry,
+            entry.Children[3]
+        };
+
+        var actual = entry.DirectoriesOfMinSize(8_381_165);
+        
+        actual.Should().BeEquivalentTo(expected);
+        // actual.Min(c => c.Size).Should().Be(24_933_642);
     }
 }

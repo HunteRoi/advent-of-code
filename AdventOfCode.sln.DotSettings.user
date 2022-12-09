@@ -4,6 +4,7 @@
     &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day7.ParserShould&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day7.FileSystemEntryShould.ReturnMaxSized&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day7.FileSystemEntryShould.PrintAsATree&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day7.FileSystemEntryShould.ReturnMinSized&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ac45e422_002D8780_002D497c_002D8694_002D8eb368fc9e08/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ReturnTheInputsParsedFromAString" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;

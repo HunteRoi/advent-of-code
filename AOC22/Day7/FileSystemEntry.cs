@@ -71,7 +71,21 @@ public sealed class FileSystemEntry
         }
         return directories;
     }
+    
+    public IEnumerable<FileSystemEntry> DirectoriesOfMinSize(int minSize)
+    {
+        var directories = new List<FileSystemEntry>();
+        if (!IsDirectory()) return directories;
 
+        if (Size >= minSize) directories.Add(this);
+        foreach (var child in Children)
+        {
+            directories.AddRange(child.DirectoriesOfMinSize(minSize));
+        }
+        return directories;
+        
+    }
+    
     public static FileSystemEntry Folder(string name)
     {
         return new FileSystemEntry(DirType, name);
