@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
 using AOC22.Day7;
-using AutoFixture;
 using FluentAssertions;
 using Xunit;
 
@@ -9,13 +7,6 @@ namespace AOC22.Tests.Day7;
 
 public class FileSystemEntryShould
 {
-    private readonly Fixture _fixture;
-
-    public FileSystemEntryShould()
-    {
-        _fixture = new Fixture();
-    }
-    
     [Fact]
     public void PrintAsATree()
     {
