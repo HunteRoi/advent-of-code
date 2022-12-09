@@ -7,32 +7,61 @@ namespace AOC22.Tests.Day7;
 
 public class FileSystemEntryShould
 {
+    private readonly FileSystemEntry _fileSystemEntry;
+    
+    public FileSystemEntryShould()
+    {
+        _fileSystemEntry = FileSystemEntry.Folder("/").AddChildren(
+            FileSystemEntry.Folder("a").AddChildren(
+                FileSystemEntry.Folder("e").AddChild(
+                    FileSystemEntry.File("i", 584)
+                ),
+                FileSystemEntry.File("f", 29_116),
+                FileSystemEntry.File("g", 2_557),
+                FileSystemEntry.File("h.lst", 62_596)
+            ),
+            FileSystemEntry.File("b.txt", 14_848_514),
+            FileSystemEntry.File("c.dat", 8_504_156),
+            FileSystemEntry.Folder("d").AddChildren(
+                FileSystemEntry.File("j", 4_060_174),
+                FileSystemEntry.File("d.log", 8_033_020),
+                FileSystemEntry.File("d.ext", 5_626_152),
+                FileSystemEntry.File("k", 7_214_296)
+            )
+        );
+    }
+
+    [Fact]
+    public void ShouldReturnFileSize()
+    {
+        const int size = 584;
+        var entry = FileSystemEntry.File("a", size);
+        
+        entry.Size.Should().Be(size);
+    }
+
+    [Fact]
+    public void ShouldReturnDirectoryFilesTotalSize()
+    {
+        const int totalSize = 94853;
+        var entry = FileSystemEntry.Folder("a").AddChildren(
+            FileSystemEntry.Folder("e").AddChild(
+                FileSystemEntry.File("i", 584)
+            ),
+            FileSystemEntry.File("f", 29_116),
+            FileSystemEntry.File("g", 2_557),
+            FileSystemEntry.File("h.lst", 62_596)
+        );
+        
+        entry.Size.Should().Be(totalSize);
+    }
+    
     [Fact]
     public void PrintAsATree()
     {
-        const string expected = "- / (dir)\r\n  - a (dir)\r\n    - e (dir)\r\n      - i (file, size=584)\r\n    - f (file, size=29116)\r\n    - g (file, size=2557)\r\n    - h.lst (file, size=62596)\r\n  - b.txt (file, size=14848514)\r\n  - c.dat (file, size=8504156)\r\n  - d (dir)\r\n    - j (file, size=4060174)\r\n    - d.log (file, size=8033020)\r\n    - d.ext (file, size=5626152)\r\n    - k (file, size=7214296)";
-        var entry = FileSystemEntry.Folder("/")
-            .AddChild(
-                FileSystemEntry.Folder("a")
-                    .AddChild(
-                        FileSystemEntry.Folder("e")
-                            .AddChild(FileSystemEntry.File("i", 584))
-                    )
-                    .AddChild(FileSystemEntry.File("f", 29_116))
-                    .AddChild(FileSystemEntry.File("g", 2_557))
-                    .AddChild(FileSystemEntry.File("h.lst", 62_596))
-            )
-            .AddChild(FileSystemEntry.File("b.txt", 14_848_514))
-            .AddChild(FileSystemEntry.File("c.dat", 8_504_156))
-            .AddChild(
-                FileSystemEntry.Folder("d")
-                    .AddChild(FileSystemEntry.File("j", 4_060_174))
-                    .AddChild(FileSystemEntry.File("d.log", 8_033_020))
-                    .AddChild(FileSystemEntry.File("d.ext", 5_626_152))
-                    .AddChild(FileSystemEntry.File("k", 7_214_296))
-            );
+        const string expected = "- / (dir)\n  - a (dir)\n    - e (dir)\n      - i (file, size=584)\n    - f (file, size=29116)\n    - g (file, size=2557)\n    - h.lst (file, size=62596)\n  - b.txt (file, size=14848514)\n  - c.dat (file, size=8504156)\n  - d (dir)\n    - j (file, size=4060174)\n    - d.log (file, size=8033020)\n    - d.ext (file, size=5626152)\n    - k (file, size=7214296)";
         
-        var actual = entry.ToTree();
+        var actual = _fileSystemEntry.ToTree();
             
         actual.Should().BeEquivalentTo(expected);
     }
@@ -40,33 +69,13 @@ public class FileSystemEntryShould
     [Fact]
     public void ReturnMaxSized()
     {
-        var entry = FileSystemEntry.Folder("/")
-            .AddChild(
-                FileSystemEntry.Folder("a")
-                    .AddChild(
-                        FileSystemEntry.Folder("e")
-                            .AddChild(FileSystemEntry.File("i", 584))
-                    )
-                    .AddChild(FileSystemEntry.File("f", 29_116))
-                    .AddChild(FileSystemEntry.File("g", 2_557))
-                    .AddChild(FileSystemEntry.File("h.lst", 62_596))
-            )
-            .AddChild(FileSystemEntry.File("b.txt", 14_848_515))
-            .AddChild(FileSystemEntry.File("c.dat", 8_504_156))
-            .AddChild(
-                FileSystemEntry.Folder("d")
-                    .AddChild(FileSystemEntry.File("j", 4_060_174))
-                    .AddChild(FileSystemEntry.File("d.log", 8_033_020))
-                    .AddChild(FileSystemEntry.File("d.ext", 5_626_152))
-                    .AddChild(FileSystemEntry.File("k", 7_214_296))
-            );
         var expected = new List<FileSystemEntry>
         {
-            entry.Children[0],
-            entry.Children[0].Children[0]
+            _fileSystemEntry.Directories[0],
+            _fileSystemEntry.Directories[0].Directories[0]
         };
 
-        var actual = entry.DirectoriesOfMaxSize(100_000);
+        var actual = _fileSystemEntry.DirectoriesOfMaxSize(100_000);
         
         actual.Should().BeEquivalentTo(expected);
         // actual.Sum(c => c.Size).Should().Be(95_437);
@@ -75,33 +84,13 @@ public class FileSystemEntryShould
     [Fact]
     public void ReturnMinSized()
     {
-        var entry = FileSystemEntry.Folder("/")
-            .AddChild(
-                FileSystemEntry.Folder("a")
-                    .AddChild(
-                        FileSystemEntry.Folder("e")
-                            .AddChild(FileSystemEntry.File("i", 584))
-                    )
-                    .AddChild(FileSystemEntry.File("f", 29_116))
-                    .AddChild(FileSystemEntry.File("g", 2_557))
-                    .AddChild(FileSystemEntry.File("h.lst", 62_596))
-            )
-            .AddChild(FileSystemEntry.File("b.txt", 14_848_515))
-            .AddChild(FileSystemEntry.File("c.dat", 8_504_156))
-            .AddChild(
-                FileSystemEntry.Folder("d")
-                    .AddChild(FileSystemEntry.File("j", 4_060_174))
-                    .AddChild(FileSystemEntry.File("d.log", 8_033_020))
-                    .AddChild(FileSystemEntry.File("d.ext", 5_626_152))
-                    .AddChild(FileSystemEntry.File("k", 7_214_296))
-            );
         var expected = new List<FileSystemEntry>
         {
-            entry,
-            entry.Children[3]
+            _fileSystemEntry,
+            _fileSystemEntry.Directories[1]
         };
 
-        var actual = entry.DirectoriesOfMinSize(8_381_165);
+        var actual = _fileSystemEntry.DirectoriesOfMinSize(8_381_165);
         
         actual.Should().BeEquivalentTo(expected);
         // actual.Min(c => c.Size).Should().Be(24_933_642);

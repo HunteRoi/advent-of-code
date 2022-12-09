@@ -28,7 +28,7 @@ public static class Parser
                     {
                         RootPath => rootDirectory,
                         ParentDirectoryRelativePath => currentDirectory!.Parent,
-                        _ => currentDirectory!.Children.First(child => child.IsDirectory() && child.Name == argument)
+                        _ => currentDirectory!.Directories.First(child => child.Name == argument)
                     };
                     break;
                 
