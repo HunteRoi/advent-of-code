@@ -31,8 +31,8 @@ public class FileSystemEntryShould
         );
     }
 
-    [Fact]
-    public void ShouldReturnFileSize()
+    [Fact(DisplayName = "Given a file, it should return its size")]
+    public void ReturnFileSize()
     {
         const int size = 584;
         var entry = FileSystemEntry.File("a", size);
@@ -40,8 +40,8 @@ public class FileSystemEntryShould
         entry.Size.Should().Be(size);
     }
 
-    [Fact]
-    public void ShouldReturnDirectoryFilesTotalSize()
+    [Fact(DisplayName = "Given a directory, it should return the sum of its files and directories recursively")]
+    public void ReturnDirectoryFilesTotalSize()
     {
         const int totalSize = 94853;
         var entry = FileSystemEntry.Folder("a").AddChildren(
@@ -56,8 +56,8 @@ public class FileSystemEntryShould
         entry.Size.Should().Be(totalSize);
     }
     
-    [Fact]
-    public void PrintAsATree()
+    [Fact(DisplayName = "Given a directory, it should return the directory and its content as a file system hierarchy tree")]
+    public void ReturnDirectoriesAndFilesAsATree()
     {
         const string expected = "- / (dir)\n  - a (dir)\n    - e (dir)\n      - i (file, size=584)\n    - f (file, size=29116)\n    - g (file, size=2557)\n    - h.lst (file, size=62596)\n  - b.txt (file, size=14848514)\n  - c.dat (file, size=8504156)\n  - d (dir)\n    - j (file, size=4060174)\n    - d.log (file, size=8033020)\n    - d.ext (file, size=5626152)\n    - k (file, size=7214296)";
         
@@ -66,8 +66,8 @@ public class FileSystemEntryShould
         actual.Should().BeEquivalentTo(expected);
     }
 
-    [Fact]
-    public void ReturnMaxSized()
+    [Fact(DisplayName = "Given a directory, it should return all the directories found which have their size of at most the provided maximum size")]
+    public void ReturnAllDirectoriesWhichSizeIsOfMaximumProvidedSize()
     {
         var expected = new List<FileSystemEntry>
         {
@@ -81,8 +81,8 @@ public class FileSystemEntryShould
         // actual.Sum(c => c.Size).Should().Be(95_437);
     }
     
-    [Fact]
-    public void ReturnMinSized()
+    [Fact(DisplayName = "Given a directory, it should return all the directories found which have their size of at least the provided minimum size")]
+    public void ReturnAllDirectoriesWhichSizeIsMinimumProvidedSize()
     {
         var expected = new List<FileSystemEntry>
         {

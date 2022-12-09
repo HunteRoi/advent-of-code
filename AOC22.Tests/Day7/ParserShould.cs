@@ -6,36 +6,51 @@ namespace AOC22.Tests.Day7;
 
 public class ParserShould
 {
-    [Fact]
+    [Fact(DisplayName = "Given the \"cd /\" command, it should return a file system entry representing the root directory")]
     public void ParseCdAndReturnDirectory()
     {
         const string input = "$ cd /";
-        const string expected = "- / (dir)";
+        var expected = FileSystemEntry.Folder("/");
         
         var result = Parser.Parse(input);
         
-        result.ToTree().Should().Be(expected);
+        result.Should().BeEquivalentTo(expected);
     }
 
-    [Fact]
+    [Fact(DisplayName = "Given the \"cd\" and \"ls\" commands once, it should return a file system entry representing the root directory and its content of depth 1")]
     public void ParseCdAndLsAndReturnDirectoryAndContent()
     {
         const string input = "$ cd /\n$ ls\ndir a\n14848514 b.txt\n8504156 c.dat\ndir d";
-        const string expected = "- / (dir)\n  - a (dir)\n  - b.txt (file, size=14848514)\n  - c.dat (file, size=8504156)\n  - d (dir)";
+        var expected = FileSystemEntry.Folder("/").AddChildren(
+            FileSystemEntry.Folder("a"),
+            FileSystemEntry.File("b.txt", 14_848_514),
+            FileSystemEntry.File("c.dat", 8_504_156),
+            FileSystemEntry.Folder("d")
+        );
 
         var result = Parser.Parse(input);
 
-        result.ToTree().Should().Be(expected);
+        result.Should().BeEquivalentTo(expected, options => options.IgnoringCyclicReferences());
     }
 
-    [Fact]
+    [Fact(DisplayName = "Given the \"cd\" and \"ls\" commands several times, it should return a file system entry representing the root directory and its content of depth 2")]
     public void ParseWholeStructureAndReturnTree()
     {
         const string input = "$ cd /\n$ ls\ndir a\n14848514 b.txt\n8504156 c.dat\ndir d\n$ cd a\n$ ls\ndir e\n29116 f\n2557 g\n62596 h.lst";
-        const string expected = "- / (dir)\n  - a (dir)\n    - e (dir)\n    - f (file, size=29116)\n    - g (file, size=2557)\n    - h.lst (file, size=62596)\n  - b.txt (file, size=14848514)\n  - c.dat (file, size=8504156)\n  - d (dir)";
+        var expected = FileSystemEntry.Folder("/").AddChildren(
+            FileSystemEntry.Folder("a").AddChildren(
+                FileSystemEntry.Folder("e"),
+                FileSystemEntry.File("f", 29_116),
+                FileSystemEntry.File("g", 2_557),
+                FileSystemEntry.File("h.lst", 62_596)
+            ),
+            FileSystemEntry.File("b.txt", 14_848_514),
+            FileSystemEntry.File("c.dat", 8_504_156),
+            FileSystemEntry.Folder("d")
+        );
 
         var result = Parser.Parse(input);
 
-        result.ToTree().Should().Be(expected);
+        result.Should().BeEquivalentTo(expected, options => options.IgnoringCyclicReferences());
     }
 }
