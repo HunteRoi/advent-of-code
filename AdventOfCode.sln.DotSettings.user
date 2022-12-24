@@ -12,5 +12,16 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day7.ParserShould&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day7.FileSystemEntryShould&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day14.ParserShould.ReturnTwoPointsInAScan&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day14.PointShould.RepresentAPoint&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day14.LineShould.RepresentAVerticalLine&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day14.PathShould.RepresentTwoLinesWithOneCommonPoint&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day14.PathShould.RepresentAPathWithMultipleCommonPoints&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day14.ParserShould.RepresentAListOfPaths&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day14.PointShould.ToStringRepresentAPoint&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day14.LineShould.ToStringShouldRepresentTwoPointsConnected&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day14.LineShould&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day14.PathShould.ToStringShouldRepresentTwoLinesConnected&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::777986C2-FECA-43B1-AEF1-D748C6E4702C::net6.0::AOC22.Tests.Day14.ListOfPathsShould.BeDrawnAsAProperScan&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
